@@ -30,3 +30,22 @@ depending on what your system supports. Here's a hint: print(u'\u2B24')
 
 """
 
+# Draw the board ( Connect 4 has a 6 rows and 7 column matrix)
+
+board = []
+
+for r in range(11):
+    
+    row = []
+    
+    for c in range(13):
+        
+        if (c+1)%2 == 0:
+            row.append("|")
+        else:
+            row.append(" ")
+        
+        
+        
+    
+
