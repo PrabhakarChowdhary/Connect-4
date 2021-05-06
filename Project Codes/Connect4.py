@@ -30,22 +30,91 @@ depending on what your system supports. Here's a hint: print(u'\u2B24')
 
 """
 
-# Draw the board ( Connect 4 has a 6 rows and 7 column matrix)
+# Draw the initial board ( Connect 4 has a 6 rows and 7 column matrix)
 
 board = []
 
-for r in range(11):
+# initiate board
+
+
+def initBoard():
     
-    row = []
+    for r in range(11):
+        
+        row = []
+        
+        for c in range(13):
+            
+            if (r+1)%2 == 0:
+                row.append("-")
+            else:
+                if (c+1)%2 == 0:
+                    row.append("|")
+                else:
+                    row.append(" ")
+                    
+        board.append(row)
+        
+    return(board)
     
-    for c in range(13):
+def drawBoard():
+    
+    for r in range(11):
         
-        if (c+1)%2 == 0:
-            row.append("|")
-        else:
-            row.append(" ")
-        
-        
-        
+        for c in range(13):
+    
+            if (c+1)%13 == 0:
+                print(board[r][c])
+            else:
+                print(board[r][c], end=(""))
+
+
+board = initBoard()
+
+player = 1
+
+while 1:
     
 
+    if player == 1:
+        move = int(input("Player 1: Please enter the column to play:\n"))
+    else:
+        move = int(input("Player 2: Please enter the column to play:\n"))
+    
+    
+    col = ((move*2)-1)
+    col -= col
+    
+    for r in range(11):
+        if (r+1)%2 == 0:
+            continue
+        else:
+            if r == 10:
+                row = r
+            else:
+                if board[r][col] == " ":
+                    continue
+                else:
+                    row = r-1
+                    
+                    
+    if player == 1:
+        board[row][col] = "X"
+    else:
+        board[row][col] = "Y"
+        
+        
+    drawBoard()
+                        
+    # Place for checking if last player won
+    
+    # Change the player turn
+    
+    if player == 1:
+        player = 2
+    else:
+        player = 1
+                
+
+            
+        
