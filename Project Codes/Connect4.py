@@ -56,6 +56,8 @@ def initBoard():
         board.append(row)
         
     return(board)
+
+# draw board
     
 def drawBoard():
     
@@ -67,44 +69,144 @@ def drawBoard():
                 print(board[r][c])
             else:
                 print(board[r][c], end=(""))
+                
+# # Function to check who won the game
 
+def checkWin(board,playerMark):
+    #  Check for horizontal
+
+    loopStatus = True
+    
+    for r in range(0,11,2):
+        
+        for c in range(0,7,2):
+            if board[r][c] == board[r][c+2] == board[r][c+4] == board[r][c+6] == playerMark:
+
+                loopStatus = False
+                break
+        if not loopStatus:
+            break
+    
+    #  Check for vertical
+        
+    for c in range(0,13,2):
+        
+        for r in range(0,5,2):
+            if board[r][c] == board[r+2][c] == board[r+4][c] == board[r+6][c] == playerMark:
+
+                loopStatus = False
+                break
+        if not loopStatus:
+            break
+        
+    # check for \ diagonal
+    
+    for c in range(0,13,2):
+        
+        for r in range(0,11,2):
+            
+            try:
+                
+                if board[r][c] == board[r+2][c+2] == board[r+4][c+4] == board[r+6][c+6] == playerMark:
+                  loopStatus = False
+                  break  
+                
+
+                    
+            except IndexError:
+
+                next
+                
+        if not loopStatus:
+            break
+    
+    # check for / diagonal
+    
+    for c in range(0,13,2):
+        
+        for r in range(10,-1,-2):
+            
+            try:
+                
+                if board[r][c] == board[r-2][c+2] == board[r-4][c+4] == board[r-6][c+6] == playerMark:
+                  loopStatus = False
+                  break  
+              
+                  
+            except IndexError:
+                next
+                
+        if not loopStatus:
+            break
+    
+    return(loopStatus)
+
+
+# Initial board conditions
 
 board = initBoard()
-
 player = 1
+
+# Game Loop
 
 while 1:
     
+    print("Player 1 ",u"\u25CF")
+    print("Player 2 ",u"\u25CB")
+    
+    drawBoard()
 
-    if player == 1:
-        move = int(input("Player 1: Please enter the column to play:\n"))
-    else:
-        move = int(input("Player 2: Please enter the column to play:\n"))
-    
-    
-    col = ((move*2)-1)
-    col -= col
-    
-    for r in range(11):
-        if (r+1)%2 == 0:
-            continue
+    # Seek valid inpt loop
+
+    while 1:
+        
+        if player == 1:
+            move = int(input("Player 1: Please enter the column (1 to 7) to play:\n"))
         else:
-            if r == 10:
-                row = r
-            else:
+            move = int(input("Player 2: Please enter the column (1 to 7) to play:\n"))
+            
+        if move > 7 or move < 1:
+            print("Please enter a value between 1 and 7")
+            continue
+            
+        tempcol = ((move*2)-1)
+        col = tempcol - 1
+            
+        if board[0][col] == " ":
+            break
+        else:
+            print("The column is full. PLease choose another column.\n")
+    
+    # Simulate gravity for move    
+                
+    for r in range(11):
+        if board[10][col] == " ":
+            row = 10
+        else:
+            if r%2 != 0:
+                continue
+            else:                
                 if board[r][col] == " ":
                     continue
                 else:
-                    row = r-1
+                    row = r-2
+                    break
                     
-                    
+    # Execute the move into the game state list
+    
     if player == 1:
-        board[row][col] = "X"
+        board[row][col] = u'\u25CF'
+        playerMark = u'\u25CF'
     else:
-        board[row][col] = "Y"
+        board[row][col] = u'\u25CB'
+        playerMark = u'\u25CB'
         
-        
-    drawBoard()
+    winStatus = checkWin(board,playerMark)
+    
+    if not winStatus:
+        drawBoard()
+        print("\nPlayer ",player," wins. ",playerMark)
+        break
                         
     # Place for checking if last player won
     
